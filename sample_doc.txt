@@ -1,0 +1,30 @@
+NYSOH Production Incident Report
+Date: 2024-01-15
+Severity: High
+Module: PaymentService
+
+Description:
+Users are experiencing payment failures when processing
+credit card transactions. The error occurs specifically
+during the authorization step of the payment flow.
+Error logs show NullPointerException at line 247 of
+PaymentService.java in the processTransaction method.
+
+Impact:
+- 847 failed transactions since 2:47 AM
+- Estimated revenue impact: $42,000
+- Affects all credit card payment types
+- Debit cards working normally
+
+Timeline:
+- 2:30 AM: Deployment CR-4821 pushed to production
+- 2:47 AM: First error reported in logs
+- 3:15 AM: Alert triggered, on-call team notified
+- 3:45 AM: Investigation started
+
+Initial Findings:
+The error stack trace points to a null check that was
+removed in CR-4821. The paymentMethod object is not
+being validated before processTransaction() is called.
+The fix requires restoring the null check with proper
+Optional wrapper pattern.
