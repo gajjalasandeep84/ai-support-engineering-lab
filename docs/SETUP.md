@@ -74,6 +74,12 @@ Ticket API:
 uvicorn ticket_api:app --reload --port 8002
 ```
 
+Streaming AI API:
+
+```powershell
+uvicorn stream_api:app --reload --port 8003
+```
+
 ## 6. Run the Scripts
 
 CLI chatbot:

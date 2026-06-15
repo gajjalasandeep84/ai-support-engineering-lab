@@ -1,6 +1,6 @@
 # API Guide
 
-This project contains three FastAPI entry points.
+This project contains four FastAPI entry points.
 
 ## Basic API
 
@@ -112,6 +112,70 @@ Filter by severity:
 curl "http://127.0.0.1:8002/tickets?severity=High"
 ```
 
+## Streaming AI API
+
+Start:
+
+```powershell
+uvicorn stream_api:app --reload --port 8003
+```
+
+Health check:
+
+```powershell
+curl http://127.0.0.1:8003/health
+```
+
+### Plain Streaming Response
+
+Endpoint:
+
+```text
+POST /stream
+```
+
+Example:
+
+```powershell
+curl -N -X POST http://127.0.0.1:8003/stream `
+  -H "Content-Type: application/json" `
+  -d "{\"prompt\":\"Explain how to troubleshoot a NullPointerException in a Spring Boot payment service.\",\"system\":\"You are a helpful Java expert.\"}"
+```
+
+### Server-Sent Events Stream
+
+Endpoint:
+
+```text
+POST /stream/sse
+```
+
+Example:
+
+```powershell
+curl -N -X POST http://127.0.0.1:8003/stream/sse `
+  -H "Content-Type: application/json" `
+  -d "{\"prompt\":\"Summarize the likely root cause of a payment authorization failure after deployment.\"}"
+```
+
+Each SSE event emits a JSON payload with a `token` field. The stream ends with `[DONE]`.
+
+### Stream Ticket Investigation
+
+Endpoint:
+
+```text
+POST /stream/investigate
+```
+
+Example:
+
+```powershell
+curl -N -X POST http://127.0.0.1:8003/stream/investigate `
+  -H "Content-Type: application/json" `
+  -d "{\"description\":\"RTC-8821: Payment authorization fails for credit card transactions after CR-4821 deployment. Logs show NullPointerException in PaymentService.processTransaction.\"}"
+```
+
 ## Interactive Docs
 
 FastAPI also provides browser-based API docs:
@@ -120,4 +184,5 @@ FastAPI also provides browser-based API docs:
 http://127.0.0.1:8000/docs
 http://127.0.0.1:8001/docs
 http://127.0.0.1:8002/docs
+http://127.0.0.1:8003/docs
 ```

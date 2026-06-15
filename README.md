@@ -9,6 +9,7 @@ This repository is a hands-on AI engineering lab focused on practical support an
 - Enterprise ticket intake and validation
 - Incident and document summarization
 - Root-cause and severity analysis
+- Streaming LLM responses for live investigation workflows
 - Local chatbot workflows for Java/Spring Boot support
 - API calling, retries, logging, and async HTTP patterns
 
@@ -21,6 +22,7 @@ The project is intentionally small and readable so each script can be studied in
 | `main.py` | Minimal FastAPI health-check service |
 | `ticket_api.py` | Ticket API with validation, severity enum, request logging, and in-memory storage |
 | `llm_api.py` | FastAPI service for document summarization and ticket analysis using an Ollama-hosted model |
+| `stream_api.py` | FastAPI service for plain-text and Server-Sent Events streaming LLM responses |
 | `chatbot.py` | CLI chatbot that keeps conversation history and calls Ollama |
 | `summarize.py` | Local document analyzer that summarizes `sample_doc.txt` into structured JSON |
 | `api_caller.py` | REST API retry/logging exercise |
@@ -63,6 +65,12 @@ Run the ticket API:
 
 ```powershell
 uvicorn ticket_api:app --reload --port 8002
+```
+
+Run the streaming AI API:
+
+```powershell
+uvicorn stream_api:app --reload --port 8003
 ```
 
 Run the CLI chatbot:
